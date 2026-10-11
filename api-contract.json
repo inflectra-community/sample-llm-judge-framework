@@ -1,0 +1,151 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Chatbot REST API",
+    "version": "1.0.0",
+    "description": "Conversational chatbot API that accepts user messages and returns AI-generated responses."
+  },
+  "paths": {
+    "/api/chatbot": {
+      "post": {
+        "summary": "Send a message to the chatbot",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Bearer token for API authentication"
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Optional request correlation ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["prompt"],
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000,
+                    "description": "The user's message to the chatbot"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response from the chatbot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["reply", "status", "timestamp"],
+                  "properties": {
+                    "reply": {
+                      "type": "string",
+                      "description": "The chatbot's response message"
+                    },
+                    "status": {
+                      "type": "number",
+                      "description": "The HTTP status for checking if successful or not"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "The timestamp of the response in ISO 8601 format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["error", "status", "timestamp"],
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Human-readable error message"
+                    },
+                    "status": {
+                      "type": "number",
+                      "description": "Machine-readable error code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "The timestamp of the response in ISO 8601 format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["error", "status"],
+                  "properties": {
+                    "error": { "type": "string" },
+                    "status": { "type": "number" }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["error", "status"],
+                  "properties": {
+                    "error": { "type": "string" },
+                    "status": { "type": "number" },
+                    "retryAfter": {
+                      "type": "number",
+                      "description": "Seconds to wait before retrying"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["error", "status"],
+                  "properties": {
+                    "error": { "type": "string" },
+                    "status": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

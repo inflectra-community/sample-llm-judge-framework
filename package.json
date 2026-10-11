@@ -1,0 +1,42 @@
+{
+  "name": "multi-agent-api-tester",
+  "version": "1.0.0",
+  "description": "Dynamic Multi-Agent Chatbot REST API Tester",
+  "main": "dist/cli.js",
+  "bin": {
+    "api-tester": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/cli.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:property": "vitest run tests/property",
+    "test:integration": "vitest run tests/integration"
+  },
+  "keywords": [
+    "api-testing",
+    "multi-agent",
+    "chatbot",
+    "stress-test"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "fast-check": "^3.15.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.6.1"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.1053.0",
+    "commander": "^12.0.0",
+    "dotenv": "^17.4.2",
+    "openai": "^6.39.0",
+    "ts-node": "^10.9.0",
+    "undici": "^6.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
